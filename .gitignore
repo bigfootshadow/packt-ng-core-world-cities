@@ -1,2 +1,4 @@
 .vs
 .idea
+/WorldCities.Server/appsettings.Development.json
+/run-container.ps1
