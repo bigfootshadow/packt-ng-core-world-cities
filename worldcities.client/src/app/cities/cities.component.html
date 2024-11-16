@@ -1,0 +1,24 @@
+<h1>Cities</h1>
+
+<p> Here's list of cities'</p>
+
+<p *ngIf="cities.length === 0">Loading....</p>
+
+<table [hidden]="cities.length === 0">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Lat</th>
+    <th>Lon</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let city of cities">
+      <td>{{ city.id }}</td>
+      <td>{{ city.name }}</td>
+      <td>{{ city.lat }}</td>
+      <td>{{ city.lon }}</td>
+    </tr>
+  </tbody>
+</table>
