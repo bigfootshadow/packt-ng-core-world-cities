@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { environment } from '../../environments/environment';
 
@@ -21,18 +21,28 @@ export class CitiesComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    console.log(environment.baseUrl + 'api/Cities');
-    this.http.get<City[]>(environment.baseUrl + 'api/Cities')
-      .subscribe({
-        next: (result) => {
-          this.cities = new MatTableDataSource(result);
-          this.cities.paginator = this.paginator;
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
-    this.cities
+    const pageEvent = new PageEvent();
+    pageEvent.pageIndex = 1;
+    pageEvent.pageSize = 10;
+    this.getData(pageEvent);
   }
 
+  getData(event: PageEvent){
+    const url = environment.baseUrl + 'api/Cities';
+
+    const params = new HttpParams()
+      .set('pageIndex', event.pageIndex)
+      .set('pageSize', event.pageSize);
+
+    this.http.get<any>(url, {params})
+      .subscribe({
+        next: response => {
+          this.paginator.length = response.totalCount;
+          this.paginator.pageIndex = response.pageIndex;
+          this.paginator.pageSize = response.pageSize;
+          this.cities = new MatTableDataSource(response.data);
+        },
+        error: error => console.error(error)
+      });
+  }
 }
