@@ -11,7 +11,8 @@ import { City } from './City';
 })
 export class CitiesComponent implements OnInit {
 
-  public cities: City[] = [];
+  public displayedColumns: string[] = ['id', 'name', 'lon', 'lat'];
+  public cities!: City[];
 
   constructor(private http: HttpClient) { }
 
