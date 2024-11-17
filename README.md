@@ -14,6 +14,10 @@ Switch from CSS to Sass (SCSS)
 
 `ng add schematics-scss-migrate`
 
+Adding nesting component in the same forlder as parent `--flat` flag
+
+e.g. `ng g c parent/child --flat`
+
 ## MS SQL
 
 Run in a Docker container
