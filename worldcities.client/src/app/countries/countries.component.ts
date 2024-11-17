@@ -6,17 +6,18 @@ import { MatSort } from '@angular/material/sort';
 
 import { environment } from '../../environments/environment';
 
-import { City } from './city';
+import { Country } from './country'
+
 
 @Component({
-  selector: 'app-cities',
-  templateUrl: './cities.component.html',
-  styleUrl: './cities.component.scss'
+  selector: 'app-countries',
+  templateUrl: './countries.component.html',
+  styleUrl: './countries.component.scss'
 })
-export class CitiesComponent implements OnInit {
+export class CountriesComponent implements OnInit {
 
-  public displayedColumns: string[] = ['id', 'name', 'lon', 'lat'];
-  public cities!: MatTableDataSource<City>;
+  public displayedColumns: string[] = ['id', 'name', 'iso2', 'iso3'];
+  public countries!: MatTableDataSource<Country>;
   public defaultPageIndex: number = 1;
   public defaultPageSize: number = 10;
   public defaultSortColumn: string = "name";
@@ -42,8 +43,8 @@ export class CitiesComponent implements OnInit {
     this.getData(pageEvent);
   }
 
-  getData(event: PageEvent){
-    const url = environment.baseUrl + 'api/Cities';
+  getData(event: PageEvent) {
+    const url = environment.baseUrl + 'api/Countries';
 
     let params = new HttpParams()
       .set('pageIndex', event.pageIndex)
@@ -55,7 +56,7 @@ export class CitiesComponent implements OnInit {
         ? this.sort.direction
         : this.defaultSortOrder);
 
-    if(this.filterQuery){
+    if (this.filterQuery) {
       params = params
         .set("filterColumn", this.defaultFilterColumn)
         .set("filterQuery", this.filterQuery);
@@ -67,7 +68,7 @@ export class CitiesComponent implements OnInit {
           this.paginator.length = response.totalCount;
           this.paginator.pageIndex = response.pageIndex;
           this.paginator.pageSize = response.pageSize;
-          this.cities = new MatTableDataSource(response.data);
+          this.countries = new MatTableDataSource(response.data);
         },
         error: error => console.error(error)
       });
