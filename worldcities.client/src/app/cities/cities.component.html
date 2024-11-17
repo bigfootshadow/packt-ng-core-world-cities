@@ -4,12 +4,18 @@
 
 <p *ngIf="!cities">Loading....</p>
 
+<mat-form-field [hidden]="!cities">
+  <input matInput
+         #filter (keyup)="loadData(filter.value)"
+         placeholder="Filter by name or part of it">
+</mat-form-field>
+
 <table
   mat-table
   [dataSource] = "cities"
   class = "mat-elevation-z8"
   [hidden]="!cities"
-  matSort (matSortChange)="loadData()"
+  matSort (matSortChange)="loadData(filter.value)"
   [matSortActive]="defaultSortColumn"
   [matSortDirection]="defaultSortOrder"
 >
