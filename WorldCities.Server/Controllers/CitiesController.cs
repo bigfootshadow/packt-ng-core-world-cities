@@ -20,9 +20,11 @@ namespace WorldCities.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<ApiResult<City>>> GetCities(
             int pageIndex = 1,
-            int pageSize = 10)
+            int pageSize = 10,
+            string? sortColumn = "",
+            string? sortOrder = "")
         {
-            return await ApiResult<City>.CreateAsync( _context.Cities.AsNoTracking(), pageIndex, pageSize);
+            return await ApiResult<City>.CreateAsync( _context.Cities.AsNoTracking(), pageIndex, pageSize, sortColumn, sortOrder);
         }
 
         // GET: api/Cities/5

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 import { environment } from '../../environments/environment';
 
@@ -16,14 +17,24 @@ export class CitiesComponent implements OnInit {
 
   public displayedColumns: string[] = ['id', 'name', 'lon', 'lat'];
   public cities!: MatTableDataSource<City>;
+  public defaultPageIndex: number = 1;
+  public defaultPageSize: number = 10;
+  public defaultSortColumn: string = "name";
+  public defaultSortOrder: "asc" | "desc" = "asc";
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData(){
     const pageEvent = new PageEvent();
-    pageEvent.pageIndex = 1;
-    pageEvent.pageSize = 10;
+    pageEvent.pageIndex = this.defaultPageIndex;
+    pageEvent.pageSize = this.defaultPageSize;
     this.getData(pageEvent);
   }
 
@@ -32,7 +43,13 @@ export class CitiesComponent implements OnInit {
 
     const params = new HttpParams()
       .set('pageIndex', event.pageIndex)
-      .set('pageSize', event.pageSize);
+      .set('pageSize', event.pageSize)
+      .set("sortColumn", (this.sort)
+        ? this.sort.active
+        : this.defaultSortColumn)
+      .set('sortOrder', (this.sort)
+        ? this.sort.direction
+        : this.defaultSortOrder);
 
     this.http.get<any>(url, {params})
       .subscribe({
